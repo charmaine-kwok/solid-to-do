@@ -29,4 +29,8 @@ code {
   .doneItem {
     @apply relative items-center mx-auto mb-4 flex w-[56%] px-4 justify-between border-2 border-red-500 bg-red-300  py-2 text-xl hover:bg-red-400;
   }
+
+  .inputDiv {
+    @apply py-8 mb-8 flex justify-center mx-auto w-[70%] rounded-md bg-slate-300;
+  }
 }
