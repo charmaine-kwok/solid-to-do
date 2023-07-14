@@ -21,4 +21,12 @@ code {
   .btn {
     @apply m-2 p-2 hover:bg-slate-100 rounded-md;
   }
+
+  .todoItem {
+    @apply relative mb-4 mx-auto flex h-[3rem] w-[56%] items-center justify-between border-2 border-green-500 bg-green-300 px-4 py-2 text-xl hover:bg-green-400;
+  }
+
+  .doneItem {
+    @apply relative items-center mx-auto mb-4 flex w-[56%] px-4 justify-between border-2 border-red-500 bg-red-300  py-2 text-xl hover:bg-red-400;
+  }
 }
