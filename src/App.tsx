@@ -16,7 +16,7 @@ const App: Component = () => {
 
   return (
     <div
-      class=" flex h-[100vh] flex-col"
+      class=" flex h-[100vh] flex-col mb-16"
       classList={{ "bg-gray-800": darkTheme() }}
     >
       <header class="my-4 flex items-center justify-center">
