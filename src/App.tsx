@@ -53,11 +53,11 @@ const App: Component = () => {
         <input
           onKeyUp={(e) => {
             if (e.key === "Enter") {
-              addTodo(entering());
-              setEntering("");
-              setTimeout(() => {
-                location.reload();
-              }, 1000);
+              if (entering()) {
+                setTodos((prev) => [...prev, entering()]);
+                addTodo(entering());
+                setEntering("");
+              }
             }
           }}
           value={entering()}
@@ -68,26 +68,22 @@ const App: Component = () => {
         />
       </div>
 
-      <Show when={todos()}>
-        <For each={todos()}>
-          {(todo) => (
-            <label class="todoItem">
-              {todo.subject} <Trash />
-            </label>
-          )}
-        </For>
-      </Show>
+      <For each={todos()}>
+        {(todo) => (
+          <label class="todoItem">
+            {todo.subject ?? todo} <Trash />
+          </label>
+        )}
+      </For>
 
-      <Show when={dones()}>
-        <For each={dones()}>
-          {(done) => (
-            <label class="doneItem">
-              {done.subject} <Trash />
-              <span class="absolute bottom-[50%] left-0 w-full border-b border-red-600" />
-            </label>
-          )}
-        </For>
-      </Show>
+      <For each={dones()}>
+        {(done) => (
+          <label class="doneItem">
+            {done.subject ?? done} <Trash />
+            <span class="absolute bottom-[50%] left-0 w-full border-b border-red-600" />
+          </label>
+        )}
+      </For>
     </div>
   );
 };
