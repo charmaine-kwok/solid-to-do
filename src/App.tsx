@@ -1,14 +1,30 @@
 import type { Component } from "solid-js";
-import { createSignal, createResource, Show, For } from "solid-js";
+import {
+  createSignal,
+  createResource,
+  createEffect,
+  Show,
+  For,
+} from "solid-js";
 
 import fetchData from "./functions/fetchData";
+import addTodo from "./functions/addTodo";
 import { Moon, Sun, Trash } from "./assets/icons/Icons";
 
 const App: Component = () => {
   const [darkTheme, setDarkTheme] = createSignal(false);
   const [entering, setEntering] = createSignal("");
+  const [todos, setTodos] = createSignal<any[]>([]);
+  const [dones, setDones] = createSignal<any[]>([]);
 
   const [data] = createResource(fetchData);
+
+  createEffect(() => {
+    if (data()) {
+      setTodos(data()?.todoData?.todos);
+      setDones(data()?.doneData?.dones);
+    }
+  }, [data()]);
 
   function toggleTheme() {
     setDarkTheme(!darkTheme());
@@ -37,8 +53,11 @@ const App: Component = () => {
         <input
           onKeyUp={(e) => {
             if (e.key === "Enter") {
-              // add(entering());
+              addTodo(entering());
               setEntering("");
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
             }
           }}
           value={entering()}
@@ -49,15 +68,18 @@ const App: Component = () => {
         />
       </div>
 
-      <Show when={data()}>
-        <For each={data()!.todoData.todos}>
+      <Show when={todos()}>
+        <For each={todos()}>
           {(todo) => (
             <label class="todoItem">
               {todo.subject} <Trash />
             </label>
           )}
         </For>
-        <For each={data()!.doneData.dones}>
+      </Show>
+
+      <Show when={dones()}>
+        <For each={dones()}>
           {(done) => (
             <label class="doneItem">
               {done.subject} <Trash />
