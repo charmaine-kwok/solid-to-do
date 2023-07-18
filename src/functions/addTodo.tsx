@@ -1,6 +1,6 @@
 export default async function addTodo(todo: string) {
   try {
-    const response = await fetch("http://localhost:8080/todo", {
+    await fetch("http://localhost:8080/todo", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -9,6 +9,5 @@ export default async function addTodo(todo: string) {
     });
   } catch (error) {
     console.error("Error fetching data:", error);
-    return { todoData: null, doneData: null };
   }
 }
