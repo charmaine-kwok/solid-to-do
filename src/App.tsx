@@ -8,9 +8,9 @@ import {
 } from "solid-js";
 
 import fetchData from "./functions/fetchData";
-import { addTodo, removeTodo } from "./functions/api/todo/todoApi";
+import { addTodo } from "./functions/api/todo/todoApi";
 import { Moon, Sun, Trash } from "./assets/icons/Icons";
-import { removeDone } from "./functions/api/done/doneApi";
+import { removeDone, addDone } from "./functions/api/done/doneApi";
 
 const App: Component = () => {
   const [darkTheme, setDarkTheme] = createSignal(false);
@@ -18,7 +18,7 @@ const App: Component = () => {
   const [todos, setTodos] = createSignal<any[]>([]);
   const [dones, setDones] = createSignal<any[]>([]);
 
-  const [data] = createResource(fetchData);
+  const [data, { mutate, refetch }] = createResource(fetchData);
 
   createEffect(() => {
     if (data()) {
@@ -55,9 +55,9 @@ const App: Component = () => {
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               if (entering()) {
-                setTodos((prev) => [...prev, entering()]);
                 addTodo(entering());
                 setEntering("");
+                setTimeout(() => refetch(), 100);
               }
             }
           }}
@@ -75,7 +75,8 @@ const App: Component = () => {
               {todo.subject ?? todo}
               <button
                 onClick={() => {
-                  removeTodo(todo.ID);
+                  addDone(todo.ID, todo.subject);
+                  setTimeout(() => refetch(), 500);
                 }}
               >
                 <Trash />
@@ -91,6 +92,7 @@ const App: Component = () => {
               <button
                 onClick={() => {
                   removeDone(done.ID);
+                  setTimeout(() => refetch(), 100);
                 }}
               >
                 <Trash />
