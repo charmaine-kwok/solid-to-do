@@ -8,8 +8,9 @@ import {
 } from "solid-js";
 
 import fetchData from "./functions/fetchData";
-import addTodo from "./functions/addTodo";
+import { addTodo, removeTodo } from "./functions/api/todo/todoApi";
 import { Moon, Sun, Trash } from "./assets/icons/Icons";
+import { removeDone } from "./functions/api/done/doneApi";
 
 const App: Component = () => {
   const [darkTheme, setDarkTheme] = createSignal(false);
@@ -35,7 +36,7 @@ const App: Component = () => {
       class=" flex h-[100vh] flex-col mb-16"
       classList={{ "bg-gray-800": darkTheme() }}
     >
-      <header class="my-4 flex items-center justify-center">
+      <header class="mb-4 flex items-center justify-center">
         <h1
           class="text-4xl font-bold"
           classList={{ "text-white": darkTheme() }}
@@ -71,7 +72,14 @@ const App: Component = () => {
       <For each={todos()}>
         {(todo) => (
           <label class="todoItem">
-            {todo.subject ?? todo} <Trash />
+            {todo.subject ?? todo}
+            <button
+              onClick={() => {
+                removeTodo(todo.ID);
+              }}
+            >
+              <Trash />
+            </button>
           </label>
         )}
       </For>
@@ -79,7 +87,14 @@ const App: Component = () => {
       <For each={dones()}>
         {(done) => (
           <label class="doneItem">
-            {done.subject ?? done} <Trash />
+            {done.subject ?? done}
+            <button
+              onClick={() => {
+                removeDone(done.ID);
+              }}
+            >
+              <Trash />
+            </button>
             <span class="absolute bottom-[50%] left-0 w-full border-b border-red-600" />
           </label>
         )}
